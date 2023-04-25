@@ -27,7 +27,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes_by_action = {'create': [permissions.IsAuthenticated],
+                                    'list': [AllowAny]}
 
     def list(self, request):
         queryset = Category.objects.all()
@@ -40,7 +41,8 @@ class BrandViewSet(viewsets.ModelViewSet):
     """
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes_by_action = {'create': [permissions.IsAuthenticated],
+                                    'list': [AllowAny]}
 
     def list(self, request):
             queryset = Brand.objects.all()
@@ -54,7 +56,8 @@ class ModelViewSet(viewsets.ModelViewSet):
     """
     queryset = Model.objects.all()
     serializer_class = ModelSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes_by_action = {'create': [permissions.IsAuthenticated],
+                                    'list': [AllowAny]}
 
     def list(self, request):
         queryset = Model.objects.all()

@@ -186,18 +186,15 @@
               <div class="col-12">
                 <div class="form-group">
 
-                       <select class="form-select" aria-label="Default select example">
-  <option selected>Open this select menu</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
+                       <select class="form-select" aria-label="Default select example" id="category_data">
+
 </select>
 
 
                 </div>
               </div>
                  <div class="col-sm-6">
-                 <select class="form-select" aria-label="Default select example" id="brand_data">
+                 <select class="form-select" aria-label="Default select example" onchange="changeModelData(this)" id="brand_data">
 </select>
               </div>
               <div class="col-sm-6">
@@ -292,6 +289,8 @@ var category_document=document.getElementById('category_list')
 var brand_document=document.getElementById('brand_list')
 var search_key=document.getElementById('search_input')
 var brand_data=document.getElementById('brand_data')
+var model_data=document.getElementById('model_data')
+var category_data=document.getElementById('category_data')
         function getTitle() {
 
     fetch('http://127.0.0.1:8000/api/iha/', {
@@ -366,6 +365,10 @@ function getCategory() {
         for(var i of data){
             category_document.innerHTML+=`
            <p><a onclick="filterByCategory('${i.name}')">${i.name}</a></p>`
+            var newOption=document.createElement('option');
+            newOption.value=i.id
+            newOption.text=i.name
+            category_data.appendChild(newOption)
         }
     })
 }
@@ -406,6 +409,9 @@ function getBrand() {
             brand_data.appendChild(newOption)
         }
     })
+}
+function changeModelData(id){
+        console.log(id.value)
 }
 getBrand();
 getCategory()

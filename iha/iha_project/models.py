@@ -3,6 +3,7 @@ from .common.fileUpload.userDirectoryPath import userDirectoryPath
 # Create your models here.
 
 class Brand(models.Model):
+    id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=100)
 
     def __str__(self):
@@ -10,6 +11,7 @@ class Brand(models.Model):
 
 class Model(models.Model):
     brand=models.ForeignKey(Brand,verbose_name=('Model'),on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=100,verbose_name='Model Adı')
 
     def __str__(self):
@@ -18,11 +20,13 @@ class Model(models.Model):
 
 class Category(models.Model):
     name=models.CharField(max_length=100)
+    id = models.AutoField(primary_key=True)
 
     def __str__(self):
         return f"{self.name}"
 
 class Iha(models.Model):
+    id = models.AutoField(primary_key=True)
     brand=models.ForeignKey(Brand,verbose_name='Marka',on_delete=models.CASCADE)
     model=models.ForeignKey(Model,verbose_name='Model',on_delete=models.CASCADE)
     weight=models.IntegerField(verbose_name='Ağırlık')

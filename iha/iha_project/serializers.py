@@ -4,7 +4,7 @@ from .models import Brand,Model,Iha,Category
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model=Brand
-        fields=('name',)
+        fields=('name','id',)
 
     def create(self, validated_data):
         """
@@ -23,7 +23,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class ModelSerializer(serializers.ModelSerializer):
     class Meta:
         model=Model
-        fields=('brand','name',)
+        fields=('brand','name','id',)
 
     def create(self, validated_data):
         """
@@ -43,7 +43,7 @@ class ModelSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model=Category
-        fields=('name',)
+        fields=('name','id',)
 
 class IhaSerializer(serializers.ModelSerializer):
     brand=BrandSerializer()
@@ -51,4 +51,4 @@ class IhaSerializer(serializers.ModelSerializer):
     category=CategorySerializer()
     class Meta:
         model=Iha
-        fields=('brand','model','weight','category','img',)
+        fields=('brand','model','weight','category','img','id',)

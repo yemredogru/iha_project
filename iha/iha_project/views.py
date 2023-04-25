@@ -60,9 +60,15 @@ class ModelViewSet(viewsets.ModelViewSet):
                                     'list': [AllowAny]}
 
     def list(self, request):
-        queryset = Model.objects.all()
-        serializer = ModelSerializer(queryset, many=True)
-        return Response(serializer.data)
+        print(request.GET.get('brand'))
+        if request.GET.get('brand') is not None:
+            queryset = Model.objects.filter(brand=request.GET.get('brand'))
+            serializer = ModelSerializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            queryset = Model.objects.all()
+            serializer = ModelSerializer(queryset, many=True)
+            return Response(serializer.data)
 
 class IhaViewSet(viewsets.ModelViewSet):
     """

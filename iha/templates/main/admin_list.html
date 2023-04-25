@@ -411,7 +411,19 @@ function getBrand() {
     })
 }
 function changeModelData(id){
-        console.log(id.value)
+        fetch(`http://127.0.0.1:8000/api/model?brand=${id.value}`, {
+        method: 'get',
+    })
+    .then(data => data.json())
+    .then(data => {
+        for(var i of data){
+
+            var newOption=document.createElement('option');
+            newOption.value=i.id
+            newOption.text=i.name
+            model_data.appendChild(newOption)
+        }
+    })
 }
 getBrand();
 getCategory()

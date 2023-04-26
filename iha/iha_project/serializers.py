@@ -45,10 +45,22 @@ class CategorySerializer(serializers.ModelSerializer):
         model=Category
         fields=('name','id',)
 
-class IhaSerializer(serializers.ModelSerializer):
+class IhaSerializerPost(serializers.ModelSerializer):
+
+    class Meta:
+        model=Iha
+        fields=('brand','model','weight','category','img','id',)
+
+class IhaSerializerUpdate(serializers.ModelSerializer):
+
+    class Meta:
+        model=Iha
+        fields=('brand','model','weight','category','img','id',)
+class IhaSerializerGet(serializers.ModelSerializer):
     brand=BrandSerializer()
     model=ModelSerializer()
     category=CategorySerializer()
     class Meta:
         model=Iha
         fields=('brand','model','weight','category','img','id',)
+

@@ -27,8 +27,8 @@ class Category(models.Model):
 
 class Iha(models.Model):
     id = models.AutoField(primary_key=True)
-    brand=models.ForeignKey(Brand,verbose_name='Marka',on_delete=models.CASCADE)
-    model=models.ForeignKey(Model,verbose_name='Model',on_delete=models.CASCADE)
-    weight=models.IntegerField(verbose_name='Ağırlık')
+    brand=models.ForeignKey(Brand,null=True,blank=True,verbose_name='Marka',on_delete=models.CASCADE)
+    model=models.ForeignKey(Model,null=True,blank=True,verbose_name='Model',on_delete=models.CASCADE)
+    weight=models.IntegerField(null=True,blank=True,verbose_name='Ağırlık')
     category=models.ForeignKey(Category,verbose_name='Kategori',null=True,blank=True,on_delete=models.CASCADE)
-    img=models.ImageField(upload_to=userDirectoryPath,verbose_name=('Iha resmi'))
+    img=models.ImageField(upload_to=userDirectoryPath,null=True,blank=True,verbose_name=('Iha resmi'))

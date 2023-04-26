@@ -6,13 +6,19 @@ from rest_framework import status
 from django.contrib.auth.models import User,auth
 from django.db.models import Q
 from django.http import HttpResponse,Http404,HttpRequest,request
-from .serializers import IhaSerializer,ModelSerializer,CategorySerializer,BrandSerializer
+from .serializers import IhaSerializerGet,IhaSerializerPost,IhaSerializerUpdate,ModelSerializer,CategorySerializer,BrandSerializer
 from .models import Iha,Model,Brand,Category
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions,viewsets
 from rest_framework.decorators import api_view
 
+def getUpdatePage(request,pk):
+    iha=Iha.objects.get(id=pk)
+    context={
+        "iha":iha
+    }
+    return render(request,'main/update_page.html',context=context)
 def getAdminPage(request):
 
     return render(request,'main/admin_list.html')
@@ -75,26 +81,40 @@ class IhaViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     """
     queryset = Iha.objects.all()
-    serializer_class = IhaSerializer
+    serializer_class = IhaSerializerGet
     permission_classes_by_action = {'create': [permissions.IsAuthenticated],
                                     'list': [AllowAny]}
     def list(self, request):
         if request.GET.get('brand') is not None:
             queryset=Iha.objects.filter(brand__name__icontains=request.GET.get('brand'))
-            serializer = IhaSerializer(queryset, many=True)
+            serializer = IhaSerializerGet(queryset, many=True)
             return Response(serializer.data)
         elif request.GET.get('category') is not None:
             queryset = Iha.objects.filter(category__name__icontains=request.GET.get('category'))
-            serializer = IhaSerializer(queryset, many=True)
+            serializer = IhaSerializerGet(queryset, many=True)
             return Response(serializer.data)
         elif request.GET.get('search') is not None:
             queryset = Iha.objects.filter(Q(brand__name__icontains=request.GET.get('search'))|Q(category__name__icontains=request.GET.get('search'))|Q(model__name__icontains=request.GET.get('search'))|Q(weight__icontains=request.GET.get('search')))
-            serializer = IhaSerializer(queryset, many=True)
+            serializer = IhaSerializerGet(queryset, many=True)
             return Response(serializer.data)
         else:
             queryset = Iha.objects.all()
-            serializer = IhaSerializer(queryset, many=True)
+            serializer = IhaSerializerGet(queryset, many=True)
             return Response(serializer.data)
+    def create(self, request, *args, **kwargs):
+        serializer = IhaSerializerPost(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+
+    def update(self, request, pk, *args, **kwargs):
+        instance = Iha.objects.get(pk=pk)
+        serializer = IhaSerializerUpdate(instance,data=request.data,partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+        else:print(serializer.errors)
+        return Response(serializer.data)
 
 
 @csrf_exempt
@@ -121,3 +141,4 @@ def register(request):
             user=User.objects.create_user(username=username,password=password,email=email,first_name=firstname,last_name=lastname,is_active=True)
             user.save()
             return HttpResponse(status=201)
+

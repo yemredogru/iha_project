@@ -90,49 +90,13 @@
     <section class="product_list section_padding">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="product_sidebar">
-                        <div class="single_sedebar">
-                            <form action="#">
-                                <input id="search_input" type="text" name="#" placeholder="Ara">
-                                <i onclick="search()" class="ti-search"></i>
-                            </form>
-                        </div>
-                        <div class="single_sedebar">
-                            <div class="select_option">
-                                <div class="select_option_list">Kategori <i class="right fas fa-caret-down"></i> </div>
-                                <div class="select_option_dropdown" id="category_list">
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single_sedebar">
-                            <div class="select_option">
-                                <div class="select_option_list">Marka <i class="right fas fa-caret-down"></i> </div>
-                                <div class="select_option_dropdown"  id="brand_list">
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="product_list">
-                        <div class="row" id="pr_list">
-
-
-                        </div>
-
-                    </div>
-                </div>
 
                 <section class="contact-section section_padding">
     <div class="container">
 
       <div class="row">
         <div class="col-12">
-          <h2 class="contact-title">IHA Ekle</h2>
+          <h2 class="contact-title">IHA Güncelle</h2>
         </div>
 
         <div class="col-lg-8">
@@ -162,16 +126,17 @@
               <div class="col-12">
                 <div class="form-group">
                   <input class="form-control" name="weight" id="weight" type="text" onfocus="this.placeholder = ''"
-                    onblur="this.placeholder = 'Ağırlık Giriniz'" placeholder='Ağırlık'>
+                    onblur="this.placeholder = 'Ağırlık Giriniz'" value="{{iha.weight}}" placeholder='Ağırlık'>
                 </div>
               </div>
             </div>
               <div class="mb-3">
-  <label for="formFile" class="form-label">Resim seçiniz...</label>
-  <input required class="form-control" type="file" id="formFile">
+  <label for="formFile" class="form-label">{{iha.img}}</label>
+                  <img src="{{iha.img.url}}" alt="#" class="img-fluid">
+  <input required class="form-control"  type="file" id="formFile">
 </div>
             <div class="form-group mt-3">
-              <a  onclick="addIha()" class="btn_3 button-contactForm">Ekle</a>
+              <a  onclick="updateIha()" class="btn_3 button-contactForm">Güncelle</a>
             </div>
           </form>
         </div>
@@ -249,25 +214,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </footer>
     <!--::footer_part end::-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-var $modal = document.querySelector('.modal');
 
-// Show loader & then get content when modal is shown
-$modal.addEventListener('show.bs.modal', function(e) {
-  var paragraphs = document.querySelector(e.relatedTarget).data('paragraphs');
-
-  document.querySelector(this)
-    .classList.add('modal-scrollfix')
-    .querySelector('.modal-body')
-    .html('loading...')
-    .load('https://baconipsum.com/api/?type=meat-and-filler&paras=' + paragraphs, function() {
-      // Use Bootstrap's built-in function to fix scrolling (to no avail)
-      $modal
-        .classList.remove('modal-scrollfix')
-        .modal('handleUpdate');
-    });
-});
-</script>
     <script>
 var row=document.getElementById('pr_list')
 var category_document=document.getElementById('category_list')
@@ -277,12 +224,13 @@ var brand_data=document.getElementById('brand_data')
 var model_data=document.getElementById('model_data')
 var category_data=document.getElementById('category_data')
 
-async function addIha(){
+async function updateIha(){
     var file=document.getElementById('formFile')
     var weight=document.getElementById('weight')
     const formData = new FormData();
-    console.log(brand_data.value)
-    formData.append("img",file.files[0])
+    if(file.files[0]){
+        formData.append("img",file.files[0])
+    }
     formData.append("weight",(weight.value))
     if(brand_data.value){
         formData.append("brand",parseInt(brand_data.value))
@@ -296,8 +244,8 @@ async function addIha(){
 
 
 
-    await fetch(`http://127.0.0.1:8000/api/iha/`,{
-        method:'POST',
+    await fetch(`http://127.0.0.1:8000/api/iha/{{iha.id}}/`,{
+        method:'PUT',
         headers:{
 
           'X-CSRFToken':document.querySelector('input[name="csrfmiddlewaretoken"]').value
@@ -306,85 +254,11 @@ async function addIha(){
 
     })
 }
-async function deleteIha(id){
-    await fetch(`http://127.0.0.1:8000/api/iha/${id}`, {
-        method: 'DELETE',
-        headers:{
 
-          'X-CSRFToken':document.querySelector('input[name="csrfmiddlewaretoken"]').value
-        },
-    }).then(()=>{getTitle()})
 
-}
-        function getTitle() {
-    row.innerHTML=""
 
-    fetch('http://127.0.0.1:8000/api/iha/', {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        console.log(data)
-        for(var i of data){
-            console.log(i)
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
 
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="single-product.html">${i.brand?i.brand.name:''}</a><p>${i.category?i.category.name:''}</p> </h3>
-                                    <p>${i.model?i.model.name:''}</p>
-                                    <p>${i.weight}</p>
-                                </div>
-                                <button type="button" class="btn btn-lg btn-success" data-toggle="modal" data-target=".modal" data-paragraphs="10">Düzenle</button>
-                                <button type="button" onclick="deleteIha(${i.id})" class="btn btn-outline-danger">Sil</button>
-                            </div>`
-        }
-    })
-}
-function search(){
-    row.innerHTML=""
-    fetch(`http://127.0.0.1:8000/api/iha/?search=${search_key.value}`, {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
 
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="#">${i.brand.name}</a><p>${i.category.name}</p> </h3>
-                                    <p>${i.model.name}</p>
-                                    <p>${i.weight}</p>
-                                </div>
-                            </div>`
-        }
-    })
-}
-
-function filterByCategory(value){
-    row.innerHTML=""
-    fetch(`http://127.0.0.1:8000/api/iha/?category=${value}`, {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
-
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="#">${i.brand.name}</a><p>${i.category.name}</p> </h3>
-                                    <p>${i.model.name}</p>
-                                    <p>${i.weight}</p>
-                                </div>
-                            </div>`
-        }
-    })
-}
 function getCategory() {
 
     fetch('http://127.0.0.1:8000/api/category/', {
@@ -393,36 +267,19 @@ function getCategory() {
     .then(data => data.json())
     .then(data => {
         for(var i of data){
-            category_document.innerHTML+=`
-           <p><a onclick="filterByCategory('${i.name}')">${i.name}</a></p>`
+
             var newOption=document.createElement('option');
             newOption.value=i.id
             newOption.text=i.name
+            if(newOption.text=='{{iha.category.name}}') {
+                newOption.selected=true
+            }
             category_data.appendChild(newOption)
         }
     })
 }
 
-function filterByBrand(value){
-    row.innerHTML=""
-    fetch(`http://127.0.0.1:8000/api/iha/?brand=${value}`, {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="single-product.html">${i.brand.name}</a><p>${i.category.name}</p> </h3>
-                                    <p>${i.model.name}</p>
-                                    <p>${i.weight}</p>
-                                </div>
-                            </div>`
-        }
-    })
-}
+
 function getBrand() {
 
     fetch('http://127.0.0.1:8000/api/brand/', {
@@ -431,12 +288,14 @@ function getBrand() {
     .then(data => data.json())
     .then(data => {
         for(var i of data){
-            brand_document.innerHTML+=`
-           <p><a onclick="filterByBrand('${i.name}')">${i.name}</a></p>`
+
             var newOption=document.createElement('option');
             newOption.value=i.id
             newOption.text=i.name
-            newOption.selected=true
+            if(newOption.text=='{{iha.brand.name}}')
+            {
+                newOption.selected=true
+            }
             brand_data.appendChild(newOption)
         }
     })
@@ -449,17 +308,19 @@ function changeModelData(id){
     .then(data => data.json())
     .then(data => {
         for(var i of data){
-
             var newOption=document.createElement('option');
             newOption.value=i.id
             newOption.text=i.name
+            if((newOption.text=='{{iha.model.name}}') || (data.length==1)) {
+                newOption.selected=true
+            }
             model_data.appendChild(newOption)
         }
     })
 }
 getBrand();
 getCategory()
-getTitle();
+
     </script>
 
     <!-- jquery plugins here-->

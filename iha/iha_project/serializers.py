@@ -53,13 +53,13 @@ class IhaSerializerPost(serializers.ModelSerializer):
 
     class Meta:
         model=Iha
-        fields=('brand','model','weight','category','img','id',)
+        fields=('brand','model','weight','category','img','id','price')
 
 class IhaSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model=Iha
-        fields=('brand','model','weight','category','img','id',)
+        fields=('brand','model','weight','category','img','id','price')
 class IhaSerializerGet(serializers.ModelSerializer):
     brand=BrandSerializer()
     model=ModelSerializer()

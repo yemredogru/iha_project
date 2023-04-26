@@ -122,7 +122,13 @@
 
 </select>
               </div>
-
+ <div class="col-12">
+                <div class="form-group">
+                  <input class="form-control" name="weight" id="price" type="text" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Fiyat Giriniz'" value="{{iha.price}}" placeholder='Fiyat'>
+                </div>
+              </div>
+            </div>
               <div class="col-12">
                 <div class="form-group">
                   <input class="form-control" name="weight" id="weight" type="text" onfocus="this.placeholder = ''"
@@ -227,11 +233,13 @@ var category_data=document.getElementById('category_data')
 async function updateIha(){
     var file=document.getElementById('formFile')
     var weight=document.getElementById('weight')
+    var price=document.getElementById('price')
     const formData = new FormData();
     if(file.files[0]){
         formData.append("img",file.files[0])
     }
     formData.append("weight",(weight.value))
+    formData.append("price",(price.value))
     if(brand_data.value){
         formData.append("brand",parseInt(brand_data.value))
     }

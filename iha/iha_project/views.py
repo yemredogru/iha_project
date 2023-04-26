@@ -14,15 +14,31 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions, viewsets
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login,logout
+from django.shortcuts import redirect
 from rest_framework import views
 from . import serializers
 from rest_framework.decorators import api_view
 
-
+@login_required(login_url='/login/')
+def logoutUser(request):
+    logout(request)
+    return redirect('/login/')
 def loginPage(request):
-    return render(request, 'main/login.html')
+    if request.method=="GET":
+        return render(request, 'main/login.html')
+    else:
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            # Redirect to a success page.
+            return redirect('/')
+        else:
+            return redirect('/login/')
 
-@login_required
+@login_required(login_url='/login/')
 def getUpdatePage(request, pk):
     iha = Iha.objects.get(id=pk)
     context = {
@@ -30,11 +46,11 @@ def getUpdatePage(request, pk):
     }
     return render(request, 'main/update_page.html', context=context)
 
-
+@login_required(login_url='/login/')
 def getAdminPage(request):
     return render(request, 'main/admin_list.html')
 
-
+@login_required(login_url='/login/')
 def getHomePage(request):
     return render(request, 'main/index.html')
 

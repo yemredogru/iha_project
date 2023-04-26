@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework import routers
-from .views import getHomePage,IhaViewSet,ModelViewSet,BrandViewSet,CategoryViewSet,getAdminPage,getUpdatePage,loginPage,logoutUser
+from .views import getHomePage,IhaViewSet,ModelViewSet,BrandViewSet,CategoryViewSet,getAdminPage,getUpdatePage,loginPage,logoutUser,register
 from django.urls import include
 
 app_name = 'iha_project'
@@ -14,6 +14,7 @@ router.register(r'category',CategoryViewSet,basename='Category')
 urlpatterns = [
     path('list/', getAdminPage, name='news'),
     path('login/', loginPage, name='login'),
+    path('register/', register, name='register'),
     path('logout/', logoutUser, name='logout'),
     path('update/<int:pk>/', getUpdatePage, name='update'),
     path('', getHomePage, name='home'),

@@ -177,3 +177,5 @@ def register(request):
                                             last_name=lastname, is_active=True)
             user.save()
             return HttpResponse(status=201)
+    else:
+        return render(request,'main/register.html')

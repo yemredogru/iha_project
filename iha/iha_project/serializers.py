@@ -66,5 +66,5 @@ class IhaSerializerGet(serializers.ModelSerializer):
     category=CategorySerializer()
     class Meta:
         model=Iha
-        fields=('brand','model','weight','category','img','id',)
+        fields=('brand','model','weight','category','img','id','price')
 

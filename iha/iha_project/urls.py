@@ -18,5 +18,4 @@ urlpatterns = [
     path('update/<int:pk>/', getUpdatePage, name='update'),
     path('', getHomePage, name='home'),
     path('api/', include(router.urls)),
-
 ]

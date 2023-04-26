@@ -4,7 +4,7 @@ from .models import Iha,Model,Category,Brand
 
 @admin.register(Iha)
 class IhaAdmin(admin.ModelAdmin):
-    list_display=('brand','model','weight','category')
+    list_display=('brand','model','weight','category','price')
 
     class Meta:
         model=Iha

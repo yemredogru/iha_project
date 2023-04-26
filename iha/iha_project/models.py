@@ -31,4 +31,5 @@ class Iha(models.Model):
     model=models.ForeignKey(Model,null=True,blank=True,verbose_name='Model',on_delete=models.CASCADE)
     weight=models.IntegerField(null=True,blank=True,verbose_name='Ağırlık')
     category=models.ForeignKey(Category,verbose_name='Kategori',null=True,blank=True,on_delete=models.CASCADE)
+    price = models.IntegerField(null=True, blank=True, verbose_name='Fiyat')
     img=models.ImageField(upload_to=userDirectoryPath,null=True,blank=True,verbose_name=('Iha resmi'))

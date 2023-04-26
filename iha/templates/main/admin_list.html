@@ -335,9 +335,12 @@ async function deleteIha(id){
                                     <h3> <a href="single-product.html">${i.brand?i.brand.name:''}</a><p>${i.category?i.category.name:''}</p> </h3>
                                     <p>${i.model?i.model.name:''}</p>
                                     <p>${i.weight}</p>
+                                     <p>${i.price}</p>
                                 </div>
                                 <button type="button" onclick="window.location.href='/update/${i.id}/'" class="btn btn-lg btn-success" data-toggle="modal" data-target=".modal" data-paragraphs="10">Düzenle</button>
                                 <button type="button" onclick="deleteIha(${i.id})" class="btn btn-outline-danger">Sil</button>
+
+
                             </div>`
         }
     })

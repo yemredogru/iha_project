@@ -12,3 +12,4 @@ def userDirectoryPath(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
 
     return 'upload/userFormUpload/{0}'.format(newName)
+#dosyayı upload ederken 32 haneli unique string ürettik ve o isimde kaydettik, güvenlik için fayda sağlıyor

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <!-- font awesome CSS -->
     <link rel="stylesheet" href="{% static 'css/all.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- flaticon CSS -->
     <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
@@ -41,12 +42,12 @@
                             <span class="menu_icon"><i class="fas fa-bars"></i></span>
                         </button>
 
-                      <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="/">Ana Sayfa</a>
                                 </li>
-                               <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" href="/list/">Ürün Listeleme ve IHA Ekleme</a>
 
                                 </li>
@@ -69,15 +70,7 @@
                 </div>
             </div>
         </div>
-        <div class="search_input" id="search_input_box">
-            <div class="container ">
-                <form class="d-flex justify-content-between search-inner">
-                    <input type="text" class="form-control" placeholder="Search Here">
-                    <button  type="submit" class="btn"></button>
-                    <span onclick="search()" class="ti-close" id="close_search" title="Close Search"></span>
-                </form>
-            </div>
-        </div>
+
     </header>
     <!-- Header part end-->
 
@@ -87,7 +80,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb_iner">
-                        <h2>Ana Sayfa</h2>
+                        <h2>Marka, Model ve Kategori Ekleme Sayfası</h2>
                     </div>
                 </div>
             </div>
@@ -99,46 +92,106 @@
     <section class="product_list section_padding">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="product_sidebar">
-                        <div class="single_sedebar">
-                            <form action="#">
-                                <input id="search_input" type="text" name="#" placeholder="Ara">
-                                <i onclick="search()" class="ti-search"></i>
-                            </form>
-                        </div>
-                        <div class="single_sedebar">
-                            <div class="select_option">
-                                <div class="select_option_list">Kategori <i class="right fas fa-caret-down"></i> </div>
-                                <div class="select_option_dropdown" id="category_list">
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single_sedebar">
-                            <div class="select_option">
-                                <div class="select_option_list">Marka <i class="right fas fa-caret-down"></i> </div>
-                                <div class="select_option_dropdown"  id="brand_list">
 
 
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="getTitle()">Filtreleri Sıfırla</button>
-                    </div>
+{% csrf_token %}
+    <div class="container">
+
+      <div class="row">
+        <div class="col-12">
+          <h2 class="contact-title">Marka Ekle</h2>
+        </div>
+
+        <div class="col-lg-8">
+          <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm"
+            novalidate="novalidate">
+            <div class="row">
+
+
+
+<div class="col-12">
+                <div class="form-group">
+                  <input class="form-control" name="brand" id="brand" type="text" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Marka Giriniz'" placeholder='Marka'>
                 </div>
-                <div class="col-md-8">
-                    <div class="product_list">
-                        <div class="row" id="pr_list">
+              </div>
+            </div>
 
 
-                        </div>
+            <div class="form-group mt-3">
+              <a  onclick="addBrand()" class="btn_3 button-contactForm">Ekle</a>
+            </div>
+          </form>
+        </div>
+  <div class="row">
+        <div class="col-12">
+          <h2 class="contact-title">Model Ekle</h2>
+        </div>
 
-                    </div>
+        <div class="col-lg-8">
+          <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm1"
+            novalidate="novalidate">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+
+                       <select class="form-select" aria-label="Default select example" id="brand_list">
+
+</select>
+
+
                 </div>
+              </div>
+
+<div class="col-12">
+                <div class="form-group">
+                  <input class="form-control" name="model" id="model" type="text" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Model Giriniz'" placeholder='Model'>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <a  onclick="addModel()" class="btn_3 button-contactForm">Ekle</a>
+            </div>
+          </form>
+        </div>
+         <div class="row">
+        <div class="col-12">
+          <h2 class="contact-title">Kategori Ekle</h2>
+        </div>
+
+        <div class="col-lg-8">
+          <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm2"
+            novalidate="novalidate">
+            <div class="row">
+              <div class="col-12">
+
+              </div>
+
+              <div class="col-12">
+                <div class="form-group">
+                  <input class="form-control" name="weight" id="category" type="text" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Kategori Giriniz'" placeholder='Kategori'>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <a  onclick="addCategory()" class="btn_3 button-contactForm">Ekle</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
             </div>
         </div>
     </section>
+
+<!-- Modal -->
+
+    {%csrf_token %}
     <!-- product list part end-->
 
     <!-- client review part here -->
@@ -156,12 +209,18 @@
                                     <a href="index.html"><img src="img/logo.png" alt="#"></a>
                                 </div>
                                 <div class="footer_menu_item">
-                                    <a href="index.html">Home</a>
-                                    <a href="about.html">About</a>
-                                    <a href="product_list.html">Products</a>
-                                    <a href="#">Pages</a>
-                                    <a href="blog.html">Blog</a>
-                                    <a href="contact.html">Contact</a>
+                                    <a href="/">Ana Sayfa</a>
+                                    {% if admin %}
+                                    <a href="/list/">Ürün Listeleme ve IHA Ekleme</a>
+                                    <a href="/add/">Marka, Kategori ve Model Ekleme</a>
+                                    {% endif %}
+                                    {% if login %}
+                                    <a href="/list/">Çıkış Yap</a>
+                                    {% else %}
+                                    <a href="/list/">Giriş Yap</a>
+                                    <a href="/list/">Kayıt Ol</a>
+                                    {% endif %}
+
                                 </div>
                             </div>
                         </div>
@@ -196,117 +255,42 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             </div>
     </footer>
     <!--::footer_part end::-->
-    <script>
-var row=document.getElementById('pr_list')
-var category_document=document.getElementById('category_list')
-var brand_document=document.getElementById('brand_list')
-var search_key=document.getElementById('search_input')
-        function getTitle() {
-    row.innerHTML=""
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    async function addBrand() {
+        var brand = document.getElementById('brand')
+        const formData = new FormData()
+        if (brand.value) {
+            formData.append('name',brand.value)
+        await fetch('http://127.0.0.1:8000/api/brand/',{
+            method:'POST',
+             headers:{
 
-    fetch('http://127.0.0.1:8000/api/iha/', {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
+          'X-CSRFToken':document.querySelector('input[name="csrfmiddlewaretoken"]').value
+        },
+            body:formData
 
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="single-product.html">${i.brand?i.brand.name:''} -Marka</a><p>${i.category?i.category.name:''} - Kategori</p> </h3>
-                                    <p>${i.model?i.model.name:''} - Model</p>
-                                    <p>${i.weight} - Ağırlık</p>
-                                    <p>${i.price}₺</p>
-                                    <button onclick="window.location.href='/add/${i.id}/'">Kirala</button>
-                                </div>
-                            </div>`
+        }).then(data=>data.status==201?Swal.fire({
+  icon: 'success',
+  title: 'Eklendi',
+  text: 'Marka ekleme başarılı!',
+}):Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Marka ekleme hatası!',
+}))
+    }
+        else{
+            Swal.fire({
+  icon: 'error',
+  title: 'tüm alanlar doldurulmalıdır',
+  text: 'Alan boş geçilemez!',
+})
         }
-    })
-}
-function search(){
-    row.innerHTML=""
-    fetch(`http://127.0.0.1:8000/api/iha/?search=${search_key.value}`, {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
-
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="#">${i.brand?i.brand.name:''} - Marka</a><p>${i.category?i.category.name:''} - Kategori</p> </h3>
-                                    <p>${i.model?i.model.name:''} - Model</p>
-                                    <p>${i.weight} - Ağırlık</p>
-                                    <p>${i.price}₺</p>
-                                </div>
-                            </div>`
-        }
-    })
-}
-
-function filterByCategory(value){
-    row.innerHTML=""
-    fetch(`http://127.0.0.1:8000/api/iha/?category=${value}`, {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
-
-                                   <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="#">${i.brand?i.brand.name:''} - Marka</a><p>${i.category?i.category.name:''} - Kategori</p> </h3>
-                                    <p>${i.model?i.model.name:''} - Model</p>
-                                    <p>${i.weight} - Ağırlık</p>
-                                    <p>${i.price}₺</p>
-                                </div>
-                            </div>`
-        }
-    })
-}
-function getCategory() {
-
-    fetch('http://127.0.0.1:8000/api/category/', {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            category_document.innerHTML+=`
-           <p><a onclick="filterByCategory('${i.name}')">${i.name}</a></p>`
-        }
-    })
-}
-
-function filterByBrand(value){
-    row.innerHTML=""
-    fetch(`http://127.0.0.1:8000/api/iha/?brand=${value}`, {
-        method: 'get',
-    })
-    .then(data => data.json())
-    .then(data => {
-        for(var i of data){
-            row.innerHTML+=`
-            <div class="col-lg-6 col-sm-6">
-                                <div class="single_product_item">
-
-                                    <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="#">${i.brand?i.brand.name:''} - Marka</a><p>${i.category?i.category.name:''} - Kategori</p> </h3>
-                                    <p>${i.model?i.model.name:''} - Model</p>
-                                    <p>${i.weight} - Ağırlık</p>
-                                    <p>${i.price}₺</p>
-                                </div>
-                            </div>`
-        }
-    })
-}
+    }
 function getBrand() {
+    var brand_list=document.getElementById('brand_list')
 
     fetch('http://127.0.0.1:8000/api/brand/', {
         method: 'get',
@@ -314,15 +298,82 @@ function getBrand() {
     .then(data => data.json())
     .then(data => {
         for(var i of data){
-            brand_document.innerHTML+=`
+            brand_list.innerHTML+=`
            <p><a onclick="filterByBrand('${i.name}')">${i.name}</a></p>`
+            var newOption=document.createElement('option');
+            newOption.value=i.id
+            newOption.text=i.name
+            newOption.selected=true
+            brand_list.appendChild(newOption)
         }
     })
 }
-getBrand();
-getCategory()
-getTitle();
-    </script>
+getBrand()
+     async function addModel() {
+        var brand = document.getElementById('brand_list')
+         var model=document.getElementById('model')
+        const formData = new FormData()
+        if (brand.value) {
+            formData.append('brand',brand.value)
+            formData.append('name',model.value)
+        await fetch('http://127.0.0.1:8000/api/model/',{
+            method:'POST',
+             headers:{
+
+          'X-CSRFToken':document.querySelector('input[name="csrfmiddlewaretoken"]').value
+        },
+            body:formData
+
+        }).then(data=>data.status==201?Swal.fire({
+  icon: 'success',
+  title: 'Eklendi',
+  text: 'Model ekleme başarılı!',
+}):Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Model ekleme hatası!',
+}))
+    }
+        else{
+            Swal.fire({
+  icon: 'error',
+  title: 'tüm alanlar doldurulmalıdır',
+  text: 'Alan boş geçilemez!',
+})
+        }
+    }
+     async function addCategory() {
+        var category = document.getElementById('category')
+        const formData = new FormData()
+        if (category.value) {
+            formData.append('name',category.value)
+        await fetch('http://127.0.0.1:8000/api/category/',{
+            method:'POST',
+             headers:{
+
+          'X-CSRFToken':document.querySelector('input[name="csrfmiddlewaretoken"]').value
+        },
+            body:formData
+
+        }).then(data=>data.status==201?Swal.fire({
+  icon: 'success',
+  title: 'Eklendi',
+  text: 'Kategori ekleme başarılı!',
+}):Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Kategori ekleme hatası!',
+}))
+    }
+        else{
+            Swal.fire({
+  icon: 'error',
+  title: 'tüm alanlar doldurulmalıdır',
+  text: 'Alan boş geçilemez!',
+})
+        }
+    }
+</script>
 
     <!-- jquery plugins here-->
     <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
@@ -334,7 +385,7 @@ getTitle();
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <!-- easing js -->
 
-    <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+<!--    <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>-->
     <!-- swiper js -->
 
     <script src="{% static 'js/swiper.min.js' %}"></script>
@@ -366,6 +417,7 @@ getTitle();
     <!-- custom js -->
 
     <script src="{% static 'js/custom.js' %}"></script>
+
 </body>
 
 </html>

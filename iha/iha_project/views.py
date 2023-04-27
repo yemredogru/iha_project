@@ -16,10 +16,35 @@ from rest_framework import permissions, viewsets
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from .cart import Cart
+
 from rest_framework import views
 from . import serializers
+
+from django.core import serializers as serialize
 from rest_framework.decorators import api_view
 
+
+def cart_add(request, product_id):
+
+    cart = Cart(request)
+    product = get_object_or_404(Iha, id=product_id) #id'ye sahip ürün yoksa 404 ekranına git
+
+    cart.add(
+            product=product,
+            quantity=1,
+            update_quantity=True)
+    return render(request, 'main/cart.html', context={'cart': cart})
+
+def cartPage(request):
+    cart = Cart(request)
+
+
+    return render(request, 'main/cart.html', context={'cart': cart})
+@login_required(login_url='/login/')
+def addPage(request):
+    return render(request,'main/add_other.html')
 @login_required(login_url='/login/')
 def logoutUser(request):
     logout(request)
@@ -52,7 +77,9 @@ def getAdminPage(request):
 
 @login_required(login_url='/login/')
 def getHomePage(request):
+
     return render(request, 'main/index.html')
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -95,7 +122,7 @@ class ModelViewSet(viewsets.ModelViewSet):
                                     'list': [AllowAny]}
 
     def list(self, request):
-        print(request.GET.get('brand'))
+
         if request.GET.get('brand') is not None:
             queryset = Model.objects.filter(brand=request.GET.get('brand'))
             serializer = ModelSerializer(queryset, many=True)
@@ -114,12 +141,14 @@ class IhaViewSet(viewsets.ModelViewSet):
     serializer_class = IhaSerializerGet
     permission_classes_by_action = {'create': [permissions.IsAuthenticated],
                                     'list': [AllowAny]}
+    #Create işlemi yaparken yetkili kullanıcının işlem yapabilmesini sağlamak için action'a göre yetki kısıtlaması getirdik
 
     def list(self, request):
+        #?query'leri yakalayabilmek için aşağıdaki ifleri oluşturduk
         if request.GET.get('brand') is not None:
-            queryset = Iha.objects.filter(brand__name__icontains=request.GET.get('brand'))
-            serializer = IhaSerializerGet(queryset, many=True)
-            return Response(serializer.data)
+            queryset = Iha.objects.filter(brand__name__icontains=request.GET.get('brand')) #örnek olarak ?brand=deneme için deneme değişkenini GET.get('brand') ile aldık ve brand name'i deneme içerenleri filtreledik
+            serializer = IhaSerializerGet(queryset, many=True) #serializer'a bu verileri gönderdik
+            return Response(serializer.data) #serializer içerisindeki data'yı return ettik, bu veri json olarak return oldu
         elif request.GET.get('category') is not None:
             queryset = Iha.objects.filter(category__name__icontains=request.GET.get('category'))
             serializer = IhaSerializerGet(queryset, many=True)
@@ -127,7 +156,7 @@ class IhaViewSet(viewsets.ModelViewSet):
         elif request.GET.get('search') is not None:
             queryset = Iha.objects.filter(Q(brand__name__icontains=request.GET.get('search')) | Q(
                 category__name__icontains=request.GET.get('search')) | Q(
-                model__name__icontains=request.GET.get('search')) | Q(weight__icontains=request.GET.get('search')))
+                model__name__icontains=request.GET.get('search')) | Q(weight__icontains=request.GET.get('search'))) # Q() sorgu'su complex sorgular için kullanılır, birden fazla sorgu olduğu için Q kullandım
             serializer = IhaSerializerGet(queryset, many=True)
             return Response(serializer.data)
         else:
@@ -143,7 +172,7 @@ class IhaViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk, *args, **kwargs):
         instance = Iha.objects.get(pk=pk)
-        serializer = IhaSerializerUpdate(instance, data=request.data, partial=True)
+        serializer = IhaSerializerUpdate(instance, data=request.data, partial=True) #sadece değişen alanların güncellenmesi için partial=True verdik
 
         if serializer.is_valid():
             serializer.save()
@@ -156,26 +185,21 @@ class IhaViewSet(viewsets.ModelViewSet):
 def register(request):
     if request.method == 'POST':
 
-        username = request.POST['username']
+        username = request.POST['username'] #body içerisinde username'i aldık
         password = request.POST['password']
-        email = request.POST['email']
-        firstname = request.POST['firstname']
-        lastname = request.POST['lastname']
-        if User.objects.filter(email=email).exists():
-            print("email var")
+
+
+        if User.objects.filter(username=username).exists(): #username veritabanında kayıtlı mı diye kontrol ettik
             response_data = {
-                "email": "Email already exists"
+                "username": "Kullanıcı adı zaten kayıtlı"
             }
-            return HttpResponse(response_data, status=409)
-        elif User.objects.filter(username=username).exists():
-            response_data = {
-                "username": "Username already exists"
-            }
-            return HttpResponse(response_data, status=409)
+            return render(request,'main/register.html',context=response_data)
         else:
-            user = User.objects.create_user(username=username, password=password, email=email, first_name=firstname,
-                                            last_name=lastname, is_active=True)
+            user = User.objects.create_user(username=username, password=password, is_active=True)
             user.save()
-            return HttpResponse(status=201)
+            response_data = {
+                "success": "Kullanıcı oluşturma başarılı"
+            } #success'i htmlde ekrana bastırabilmek için tanımladık
+            return render(request, 'main/register.html', context=response_data)
     else:
         return render(request,'main/register.html')

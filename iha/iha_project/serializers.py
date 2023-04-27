@@ -60,8 +60,11 @@ class IhaSerializerUpdate(serializers.ModelSerializer):
     class Meta:
         model=Iha
         fields=('brand','model','weight','category','img','id','price')
+
+#IhaSerializerGet işleminde brand,model ve category'lerin sadece id'leri geliyordu, bu alanlara ait name alanlarını da alabilmek için ilişkilendirilmiş tablolara ait Serializer oluşturduk ve bunu
+#Get işlemi yaparken kullandık
 class IhaSerializerGet(serializers.ModelSerializer):
-    brand=BrandSerializer()
+    brand=BrandSerializer() #bu işlem sayesinde inner_join yaptık
     model=ModelSerializer()
     category=CategorySerializer()
     class Meta:

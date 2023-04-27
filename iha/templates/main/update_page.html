@@ -47,8 +47,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="/">Ana Sayfa</a>
                                 </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="/list/">Ürün Listeleme ve IHA Ekleme</a>
+
+                                </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/list/">Admin Panel</a>
+                                    <a class="nav-link" href="/add/">Marka, Kategori ve Model Ekleme</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/login/">Giriş Yap</a>
@@ -59,8 +63,8 @@
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                            <a href="cart.html">
+
+                            <a href="/cart/">
                                 <i class="flaticon-shopping-cart-black-shape"></i>
                             </a>
                         </div>
@@ -78,7 +82,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb_iner">
-                        <h2>product list</h2>
+                        <h2>Ürün Güncelleme Sayfası</h2>
                     </div>
                 </div>
             </div>
@@ -176,7 +180,13 @@
                                 <div class="footer_menu_item">
                                     <a href="/">Ana Sayfa</a>
                                     {% if admin %}
-                                    <a href="/list/">Admin Panel</a>
+
+                                    <a class="nav-link" href="/list/">Ürün Listeleme ve IHA Ekleme</a>
+
+
+
+                                    <a class="nav-link" href="/add/">Marka, Kategori ve Model Ekleme</a>
+
                                     {% endif %}
                                     {% if login %}
                                     <a href="/list/">Çıkış Yap</a>

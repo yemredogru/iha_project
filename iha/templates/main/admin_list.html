@@ -47,8 +47,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="/">Ana Sayfa</a>
                                 </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="/list/">Ürün Listeleme ve IHA Ekleme</a>
+
+                                </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/list/">Admin Panel</a>
+                                    <a class="nav-link" href="/add/">Marka, Kategori ve Model Ekleme</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -57,8 +61,8 @@
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                            <a href="cart.html">
+
+                            <a href="/cart/">
                                 <i class="flaticon-shopping-cart-black-shape"></i>
                             </a>
                         </div>
@@ -76,7 +80,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb_iner">
-                        <h2>product list</h2>
+                        <h2>Ürün Listeleme ve Ekleme Sayfası</h2>
                     </div>
                 </div>
             </div>
@@ -113,6 +117,7 @@
                                 </div>
                             </div>
                         </div>
+                        <button onclick="getTitle()">Filtreleri Sıfırla</button>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -209,7 +214,12 @@
                                 <div class="footer_menu_item">
                                     <a href="/">Ana Sayfa</a>
                                     {% if admin %}
-                                    <a href="/list/">Admin Panel</a>
+
+                                    <a class="nav-link" href="/list/">Ürün Listeleme ve IHA Ekleme</a>
+
+
+                                    <a class="nav-link" href="/add/">Marka, Kategori ve Model Ekleme</a>
+
                                     {% endif %}
                                     {% if login %}
                                     <a href="/list/">Çıkış Yap</a>
@@ -253,6 +263,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </footer>
     <!--::footer_part end::-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 var $modal = document.querySelector('.modal');
 
@@ -312,8 +323,17 @@ async function addIha(){
         },
         body:formData
 
-    })
+    }).then(data=>data.status=="200"?Swal.fire({
+  icon: 'success',
+  title: 'Eklendi',
+  text: 'Ürün ekleme başarılı!',
+}):Swal.fire({
+  icon: 'error',
+  title: 'Hata...',
+  text: 'Lütfen tüm alanları doldurunuz!',
+}))
 }
+
 async function deleteIha(id){
     await fetch(`http://127.0.0.1:8000/api/iha/${id}`, {
         method: 'DELETE',
@@ -321,7 +341,11 @@ async function deleteIha(id){
 
           'X-CSRFToken':document.querySelector('input[name="csrfmiddlewaretoken"]').value
         },
-    }).then(()=>{getTitle()})
+    }).then(()=>{Swal.fire({
+        icon:'success',
+        title:'Silindi',
+        text:'ürün başarıyla silindi!'
+    });getTitle()})
 
 }
         function getTitle() {
@@ -340,10 +364,10 @@ async function deleteIha(id){
                                 <div class="single_product_item">
 
                                     <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="single-product.html">${i.brand?i.brand.name:''}</a><p>${i.category?i.category.name:''}</p> </h3>
-                                    <p>${i.model?i.model.name:''}</p>
-                                    <p>${i.weight}</p>
-                                     <p>${i.price}</p>
+                                    <h3> <a href="single-product.html">${i.brand?i.brand.name:''} -Marka</a><p>${i.category?i.category.name:''} -Kategori</p> </h3>
+                                    <p>${i.model?i.model.name:''} -Model</p>
+                                    <p>${i.weight} -Ağırlık</p>
+                                     <p>${i.price}₺</p>
                                 </div>
                                 <button type="button" onclick="window.location.href='/update/${i.id}/'" class="btn btn-lg btn-success" data-toggle="modal" data-target=".modal" data-paragraphs="10">Düzenle</button>
                                 <button type="button" onclick="deleteIha(${i.id})" class="btn btn-outline-danger">Sil</button>
@@ -388,9 +412,10 @@ function filterByCategory(value){
                                 <div class="single_product_item">
 
                                     <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="#">${i.brand.name}</a><p>${i.category.name}</p> </h3>
-                                    <p>${i.model.name}</p>
-                                    <p>${i.weight}</p>
+                                    <h3> <a href="#">${i.brand?i.brand.name:''} -Marka</a><p>${i.category?i.category.name:''} -Kategori</p> </h3>
+                                    <p>${i.model?i.model.name:''} -Model</p>
+                                    <p>${i.weight} -Ağırlık</p>
+                                    <p>${i.price}₺</p>
                                 </div>
                             </div>`
         }
@@ -426,9 +451,10 @@ function filterByBrand(value){
             <div class="col-lg-6 col-sm-6">
                                 <div class="single_product_item">
                                     <img src="${i.img}" alt="#" class="img-fluid">
-                                    <h3> <a href="single-product.html">${i.brand.name}</a><p>${i.category.name}</p> </h3>
-                                    <p>${i.model.name}</p>
-                                    <p>${i.weight}</p>
+                                    <h3> <a href="#">${i.brand?i.brand.name:''} -Marka</a><p>${i.category?i.category.name:''}</p> -Kategori</h3>
+                                    <p>${i.model?i.model.name:''} -Model</p>
+                                    <p>${i.weight} -Ağırlık</p>
+                                    <p>${i.price}₺</p>
                                 </div>
                             </div>`
         }

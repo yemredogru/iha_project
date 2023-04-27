@@ -4,11 +4,19 @@ Projenin Amacı:
 Projede Kullanılan Araçlar:
 	Django, Jazzmin, Django Rest Framework
 Projenin İndirilmesi ve Çalıştırılması:
+	Docker olmadan nasıl çalıştırabilirim ?:
 	git clone https://github.com/yemredogru/iha_project.git komutu ile projemizi indiriyoruz.
 	
 	cd iha komutu ile iha klasörüne geçiş yapıyoruz
 	pip install -r requirements.txt komutu ile paketlerimizi kuruyoruz.
 	py manage.py runserver ile projemizi ayağa kaldırıyoruz.
+	
+	Docker ile nasıl çalıştırabilirim ?:
+	git clone https://github.com/yemredogru/iha_project.git komutu ile projemizi indiriyoruz.
+	
+	cd iha komutu ile iha klasörüne geçiş yapıyoruz
+
+	docker-compose up – build komutu yardımıyla projemizi docker ile ayağa kaldırmış oluyoruz.
 
  Projenin Tanıtımı:
   Bu bölümde, projede yer alan sayfalar ve bu sayfaların nasıl kullanılacağı anlatılmak istenmektedir.

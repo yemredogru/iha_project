@@ -16,11 +16,23 @@ Projede Yer Alan Sayfalar
 
 
 API Kullanım Klavuzu
+2.1 Shipment Service
+Web service URL: BASE_URL/shipment
+
+
+2.1.1 Create Shipment Request (CreateShipmentRequest)
+
+Method: POST
+
+Content-type: application/json;  charset=utf-8
+
+
+Input parameters:
 <table class="c32">
 <tbody>
 <tr class="c84">
 <td class="c41 c20" colspan="5" rowspan="1">
-<p class="c17"><span class="c33 c24">CreateShipmentRequest</span></p>
+<p class="c17"><span class="c33 c24">Tüm Ihaları listeleme</span></p>
 </td>
 </tr>
 <tr class="c14">

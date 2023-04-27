@@ -1,7 +1,11 @@
-version: '3.9'
+version: "3.8"
 services:
-  django:
-    image: django-docker:0.0.1
+  app:
     build: .
+    volumes:
+      - .:/iha
     ports:
-      - "8000:8000"
+      - 8001:8001
+    image: app:iha
+    container_name: django_container2
+    command: python iha/manage.py runserver 0.0.0.0:8001
